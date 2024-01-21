@@ -1,4 +1,5 @@
 #include "monty.h"
+#include <string.h>
 
 bus_t bus;
 /**
@@ -18,17 +19,17 @@ void start_init(FILE *fd)
  *
  *
  */
-void parseArguments(int argc, char *argv[], FILE *file, bus_t *bus)
+void parseArguments(int argc, char *argv[], FILE **file, bus_t *bus)
 {
 	if (argc != 2)
 	{
-		dprintf(2, "USAGE: monty file\n");
+		fprintf(stderr, "USAGE: monty file\n");
 		exit(EXIT_FAILURE);
 	}
 	*file = fopen(argv[1], "r");
 	if (!*file)
 	{
-		dprintf(2, "Can't open file %s\n", argv[1]);
+		fprintf(stderr, "Can't open file %s\n", argv[1]);
 		exit(EXIT_FAILURE);
 	}
 	start_init(*file);
@@ -47,7 +48,7 @@ void processFile(FILE *file, stack_t **stack, bus_t *bus)
 	size_t read_line = 1;
 	unsigned int counter = 0;
 
-	while (read_life > 0)
+	while (read_line > 0)
 	{
 		content = NULL;
 		read_line = getline(&content, &size, file);
@@ -55,7 +56,7 @@ void processFile(FILE *file, stack_t **stack, bus_t *bus)
 		counter++;
 		if (read_line > 0)
 		{
-			execute(content, stack, counter, file, bus);
+			execute(content, stack, counter, bus);
 		}
 		free(content);
 	}
@@ -81,7 +82,7 @@ void cleanup(FILE *file, stack_t *stack)
 int main(int argc, char *argv[])
 {
 	FILE *file;
-	stack_t stack;
+	stack_t *stack;
 	bus_t bus;
 
 	stack = NULL;
