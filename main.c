@@ -45,21 +45,26 @@ void processFile(FILE *file, stack_t **stack, bus_t *bus)
 {
 	char *content = NULL;
 	size_t size = 0;
-	size_t read_line = 1;
 	unsigned int counter = 0;
+	size_t initial_size = 128;
+	size_t length;
 
-	while (read_line > 0)
+	content = (char*)malloc(initial_size * sizeof(char));
+	if (content ==NULL)
 	{
-		content = NULL;
-		read_line = getline(&content, &size, file);
+		fprintf(stderr, "Memory allocation error");
+		exit(EXIT_FAILURE);
+	}
+	while (fgets(content, size, file) != NULL)
+	{
 		bus->content = content;
 		counter++;
-		if (read_line > 0)
-		{
-			execute(content, stack, counter, bus);
-		}
-		free(content);
+		length = strlen(content);
+		if (length > 0 && content[length -1] == '\n')
+			content[length-1] = '\0';
+		execute(content, stack, counter, bus);
 	}
+	free(content);
 }
 
 /**

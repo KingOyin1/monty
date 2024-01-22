@@ -75,7 +75,7 @@ instruction_t findOpcode(char *opcode)
 			return (opcodes[i]);
 		}
 	}
-	return (instruction_t){NULL, NULL};
+	return (opcodes[i]);
 }
 
 /**
