@@ -58,7 +58,7 @@ void free_stack(stack_t *head);
 
 void cleaning(stack_t **head, bus_t *bus);
 void executeFoundOpcode(instruction_t opcode, char *arg_str, stack_t **head, unsigned int counter, bus_t *bus);
-char *parseOpcode(char *content);
+char *parseOpcode(char *content, stack_t **head, bus_t *bus);
 instruction_t findOpcode(char *opcode);
 /*void processFile(FILE file, stack_t **stack, bus_t bus);
 void parseArguments(int argc, char *argv[], FILE *file, bus_t *bus);*/

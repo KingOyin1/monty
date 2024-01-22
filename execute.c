@@ -4,11 +4,12 @@
  *
  *
  */
-char *parseOpcode(char *content)
+char *parseOpcode(char *content, stack_t **head, bus_t *bus)
 {
 	char *opcode = strtok(content, " \t\n");
 	if (opcode == NULL || opcode[0] == '#')
 	{
+		cleaning(head, bus);
 		return (NULL);
 	}
 	return (opcode);
@@ -38,7 +39,7 @@ int execute(char *content, stack_t **head, unsigned int counter, bus_t *bus)
 	char *arg_str;
 	instruction_t foundOpcode;
 
-	opcode = parseOpcode(content);
+	opcode = parseOpcode(content, head, bus);
 	if (opcode == NULL)
 		return 0;
 	arg_str = strtok(NULL, " \t\n");
@@ -72,9 +73,7 @@ instruction_t findOpcode(char *opcode)
 		if (strcmp(opcode, opcodes[i].opcode) == 0)
 		{
 			return (opcodes[i]);
-		}	
-		if (i > -1)
-			printf("now");
+		}
 	}
 	return (instruction_t){NULL, NULL};
 }
